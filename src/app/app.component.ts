@@ -102,4 +102,29 @@ export class AppComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
   }
+
+  onDragHandleMouseDown(event: MouseEvent, product: any) {
+    event.stopPropagation(); 
+    this.draggedProduct = product;
+      const offsetX = event.clientX - product.position.left;
+    const offsetY = event.clientY - product.position.top;
+  
+    const mouseMoveHandler = (moveEvent: MouseEvent) => {
+      product.position = {
+        left: moveEvent.clientX - offsetX,
+        top: moveEvent.clientY - offsetY
+      };
+      this.saveProductPositions(); 
+    };
+  
+    const mouseUpHandler = () => {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+      this.draggedProduct = null;
+    };
+  
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  }
+
 }
