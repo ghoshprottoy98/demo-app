@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import jsonData from './data/data.json'
+import jsonData from './data/data.json';
+import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, CdkDropList, CdkDrag],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'demo-app';
 
-  draggedProduct: any = null;
   products: any[] = jsonData.products;
 
   ngOnInit() {
@@ -36,95 +36,46 @@ export class AppComponent {
     }));
     this.saveProductPositions();
   }
-
-  saveProductPositions() {
-    localStorage.setItem('products', JSON.stringify(this.products));
-  }
-
-  editProduct(product: any) {
-    product.isEditing = true;
-  }
-
-  saveProduct(product: any) {
-    product.isEditing = false;
-    this.saveProductPositions(); 
-  }
-
-  deleteProduct(product: any) {
-    this.products = this.products.filter(p => p.id !== product.id); 
-    this.saveProductPositions(); 
-  }
-
-  addProduct(name: string, price: string, category: string) {
-    const newProduct = {
-      id: this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1, // Generate new ID
-      name,
-      price: parseFloat(price), 
-      category,
-      position: { left: Math.random() * (window.innerWidth - 200), top: Math.random() * (window.innerHeight - 250) },
-      isEditing: false
-    };
-    this.products.push(newProduct); 
-    this.saveProductPositions(); 
-  }
-
-  duplicateProduct(product: any) {
-    const newProduct = {
-      ...product,
-      id: this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1, 
-      position: { left: product.position.left + 20, top: product.position.top + 20 } 
-    };
-    this.products.push(newProduct);
-    this.saveProductPositions();
-  }
   
-  onDragStart(event: DragEvent, product: any) {
-    this.draggedProduct = product;
-    event.dataTransfer?.setData('text/plain', JSON.stringify(product));
-  }
+    drop(event: CdkDragDrop<string[]>) {
+      moveItemInArray(this.products, event.previousIndex, event.currentIndex);
+    }
 
-  onDragEnd(event: DragEvent, product: any) {
-    if (this.draggedProduct === product) {
-      const newPosition = {
-        left: event.clientX - (event.target as HTMLElement).offsetWidth / 2,
-        top: event.clientY - (event.target as HTMLElement).offsetHeight / 2
-      };
-      product.position = newPosition;
+    saveProductPositions() {
+      localStorage.setItem('products', JSON.stringify(this.products));
+    }
+
+    saveProduct(product: any) {
+      product.isEditing = false;
       this.saveProductPositions(); 
     }
-    this.draggedProduct = null;
-  }
 
-  onDragOver(event: DragEvent) {
-    event.preventDefault(); 
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onDragHandleMouseDown(event: MouseEvent, product: any) {
-    event.stopPropagation(); 
-    this.draggedProduct = product;
-      const offsetX = event.clientX - product.position.left;
-    const offsetY = event.clientY - product.position.top;
-  
-    const mouseMoveHandler = (moveEvent: MouseEvent) => {
-      product.position = {
-        left: moveEvent.clientX - offsetX,
-        top: moveEvent.clientY - offsetY
-      };
+    deleteProduct(product: any) {
+      this.products = this.products.filter(p => p.id !== product.id); 
       this.saveProductPositions(); 
-    };
+    }
   
-    const mouseUpHandler = () => {
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
-      this.draggedProduct = null;
-    };
-  
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
-  }
+    addProduct(name: string, price: string, category: string) {
+      const newProduct = {
+        id: this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1, // Generate new ID
+        name,
+        price: parseFloat(price), 
+        category,
+        position: { left: Math.random() * (window.innerWidth - 200), top: Math.random() * (window.innerHeight - 250) },
+        isEditing: false
+      };
+      this.products.push(newProduct); 
+      this.saveProductPositions(); 
+    }
 
+    duplicateProduct(product: any) {
+      const newProduct = {
+        ...product,
+        id: this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1, 
+        position: { left: Math.random() * (window.innerWidth - 200), top: Math.random() * (window.innerHeight - 250) } 
+      };
+      this.products.push(newProduct);
+      this.saveProductPositions();
+    }
+  
 }

@@ -1,4 +1,4 @@
- 
+
 <div class="add-product">
   <h3>Add New Product</h3>
   <input class="input" type="text" #newProductName placeholder="Product Name" />
@@ -8,30 +8,28 @@
 </div>
 
 
- <div class="product-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+<div class="container">
+<div cdkDropList cdkDropListOrientation="mixed" class="example-list" (cdkDropListDropped)="drop($event)">
   @for (product of products; track product.id) {
-     <div 
-     class="product-card" 
-     [ngStyle]="{
-       'left.px': product.position?.left || 0,
-       'top.px': product.position?.top || 0
-     }"
-     draggable="false">
+    <div class="example-box" cdkDrag>
 
-      <div class="drag-handle" (mousedown)="onDragHandleMouseDown($event, product)">
-        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-          <path d="M0 0h24v24H0z" fill="none"></path>
-        </svg>
-      </div>
-     
       <div>
         <div class="product-name">{{ product.name }}</div>
         <div class="product-item"> ${{ product.price }}</div>
         <div class="product-item"> {{ product.category }}</div>
       </div>
+
       <button class="delete-button" (click)="deleteProduct(product)">Delete</button> 
       <button class="duplicate-button" (click)="duplicateProduct(product)">Duplicate</button> 
+
+      <div class="example-handle" cdkDragHandle>
+        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+
     </div>
   }
+</div>
 </div>
