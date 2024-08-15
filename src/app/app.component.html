@@ -12,11 +12,25 @@
 <div cdkDropList cdkDropListOrientation="mixed" class="example-list" (cdkDropListDropped)="drop($event)">
   @for (product of products; track product.id) {
     <div class="example-box" cdkDrag>
-
-      <div>
+  
+      <!-- <div>
         <div class="product-name">{{ product.name }}</div>
         <div class="product-item"> ${{ product.price }}</div>
         <div class="product-item"> {{ product.category }}</div>
+      </div> -->
+
+      <div class="small-box-container">
+        {{product.name}}
+        <div cdkDropList cdkDropListOrientation="mixed" class="example-list" (cdkDropListDropped)="nestedDrop($event)">
+        @for (subProduct of subProducts; track subProduct.id) {
+          <div class="small-example-box" cdkDrag>
+           {{ subProduct.name }}<br>
+          {{ subProduct.price }}<br>
+          {{ subProduct.category }}     
+              
+          </div>
+        }
+      </div>
       </div>
 
       <button class="delete-button" (click)="deleteProduct(product)">Delete</button> 

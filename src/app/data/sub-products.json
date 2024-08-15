@@ -1,0 +1,61 @@
+{
+    "subProducts": [
+      {
+        "id": 1,
+        "name": "Sub Product 1",
+        "price": 49.99,
+        "category": "Electronics",
+        "parentId": 101
+      },
+      {
+        "id": 2,
+        "name": "Sub Product 2",
+        "price": 19.99,
+        "category": "Accessories",
+        "parentId": 101
+      },
+      {
+        "id": 3,
+        "name": "Sub Product 3",
+        "price": 29.99,
+        "category": "Home Appliances",
+        "parentId": 102
+      },
+      {
+        "id": 4,
+        "name": "Sub Product 4",
+        "price": 59.99,
+        "category": "Kitchen",
+        "parentId": 102
+      },
+      {
+        "id": 5,
+        "name": "Sub Product 5",
+        "price": 9.99,
+        "category": "Stationery",
+        "parentId": 103
+      },
+      {
+        "id": 6,
+        "name": "Sub Product 6",
+        "price": 14.99,
+        "category": "Books",
+        "parentId": 103
+      },
+      {
+        "id": 7,
+        "name": "Sub Product 7",
+        "price": 89.99,
+        "category": "Fashion",
+        "parentId": 104
+      },
+      {
+        "id": 8,
+        "name": "Sub Product 8",
+        "price": 39.99,
+        "category": "Beauty",
+        "parentId": 104
+      }
+    ]
+  }
+  

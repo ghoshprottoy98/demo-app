@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import jsonData from './data/data.json';
+import subproductsData from './data/sub-products.json'
 import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -15,6 +16,7 @@ export class AppComponent {
   title = 'demo-app';
 
   products: any[] = jsonData.products;
+  subProducts : any[] = subproductsData.subProducts;
 
   ngOnInit() {
     this.loadProductPositions();
@@ -40,6 +42,12 @@ export class AppComponent {
     drop(event: CdkDragDrop<string[]>) {
       moveItemInArray(this.products, event.previousIndex, event.currentIndex);
     }
+
+    nestedDrop(event: CdkDragDrop<string[]>) {
+      moveItemInArray(this.subProducts, event.previousIndex, event.currentIndex);
+    }
+
+
 
     saveProductPositions() {
       localStorage.setItem('products', JSON.stringify(this.products));
